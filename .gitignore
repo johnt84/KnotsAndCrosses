@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/KnotsAndCrosses/obj/Debug
+/KnotsAndCrosses/Properties/AssemblyInfo.cs
+/.vs/KnotsAndCrosses/v15/Server/sqlite3
+/.vs/KnotsAndCrosses/v15/.suo
+/KnotsAndCrosses/bin/Debug/KnotsAndCrosses.exe
+/KnotsAndCrosses/bin/Debug/KnotsAndCrosses.pdb
+/KnotsAndCrosses/bin/Debug/KnotsAndCrosses.exe.config
