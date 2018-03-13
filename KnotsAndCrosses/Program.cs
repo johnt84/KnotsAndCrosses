@@ -84,15 +84,26 @@ namespace KnotsAndCrosses
                     }
                     else
                     {
-                        var availablePositions = gameBoard.ToList()
-                                                          .Where(x => x != "O" && x != "X")
-                                                          .ToList();
+                        if(CheckNextMoveWinsGame(gameBoard, "X") > -1)
+                        {
+                            gameInput = CheckNextMoveWinsGame(gameBoard, "X");
+                        }
+                        else if (CheckNextMoveWinsGame(gameBoard, "O") > -1)
+                        {
+                            gameInput = CheckNextMoveWinsGame(gameBoard, "O");
+                        }
+                        else
+                        {
+                            var availablePositions = gameBoard.ToList()
+                                  .Where(x => x != "O" && x != "X")
+                                  .ToList();
 
-                        var availablePositionArr = availablePositions.ToArray();
+                            var availablePositionArr = availablePositions.ToArray();
 
-                        Random rnd = new Random();
-                        int computerEntryPostion = rnd.Next(0, availablePositions.Count);
-                        gameInput = Convert.ToInt32(availablePositionArr[computerEntryPostion]);
+                            Random rnd = new Random();
+                            int computerEntryPostion = rnd.Next(0, availablePositions.Count);
+                            gameInput = Convert.ToInt32(availablePositionArr[computerEntryPostion]);
+                        }
 
                         Console.WriteLine($"\nPlayer { playerSwitch + 1 } chose position { gameInput }.");
                     }
@@ -157,8 +168,112 @@ namespace KnotsAndCrosses
 
             } while (anotherGameInput == "y" && gameInput != 99);
 
-            Console.WriteLine("\nPress any key to continue...");
+            Console.WriteLine("\nPress any playerNextMoveWinsGamekey to continue...");
             Console.ReadLine();
+        }
+
+        public static int CheckNextMoveWinsGame(string[] gameBoard, string player)
+        {
+            int nextMove = -1;
+
+            if(gameBoard[0] == gameBoard[1] && gameBoard[2] == "2" && gameBoard[0] == player)
+            {
+                nextMove = 2;
+            }
+            else if (gameBoard[1] == gameBoard[2] && gameBoard[0] == "0" && gameBoard[1] == player)
+            {
+                nextMove = 0;
+            }
+            else if (gameBoard[0] == gameBoard[2] && gameBoard[1] == "1" && gameBoard[0] == player)
+            {
+                nextMove = 1;
+            }
+            else if (gameBoard[3] == gameBoard[4] && gameBoard[5] == "5" && gameBoard[3] == player)
+            {
+                nextMove = 5;
+            }
+            else if (gameBoard[3] == gameBoard[5] && gameBoard[4] == "4" && gameBoard[3] == player)
+            {
+                nextMove = 4;
+            }
+            else if (gameBoard[4] == gameBoard[5] && gameBoard[3] == "3" && gameBoard[4] == player)
+            {
+                nextMove = 3;
+            }
+            else if (gameBoard[6] == gameBoard[7] && gameBoard[8] == "8" && gameBoard[6] == player)
+            {
+                nextMove = 8;
+            }
+            else if (gameBoard[6] == gameBoard[8] && gameBoard[7] == "7" && gameBoard[6] == player)
+            {
+                nextMove = 7;
+            }
+            else if (gameBoard[7] == gameBoard[8] && gameBoard[6] == "6" && gameBoard[7] == player)
+            {
+                nextMove = 6;
+            }
+            else if (gameBoard[0] == gameBoard[3] && gameBoard[6] == "6" && gameBoard[0] == player)
+            {
+                nextMove = 6;
+            }
+            else if (gameBoard[0] == gameBoard[6] && gameBoard[3] == "3" && gameBoard[0] == player)
+            {
+                nextMove = 3;
+            }
+            else if (gameBoard[3] == gameBoard[6] && gameBoard[0] == "0" && gameBoard[3] == player)
+            {
+                nextMove = 0;
+            }
+            else if (gameBoard[1] == gameBoard[4] && gameBoard[7] == "7" && gameBoard[1] == player)
+            {
+                nextMove = 7;
+            }
+            else if (gameBoard[1] == gameBoard[7] && gameBoard[4] == "4" && gameBoard[1] == player)
+            {
+                nextMove = 4;
+            }
+            else if (gameBoard[4] == gameBoard[7] && gameBoard[1] == "1" && gameBoard[4] == player)
+            {
+                nextMove = 1;
+            }
+            else if (gameBoard[2] == gameBoard[5] && gameBoard[8] == "8" && gameBoard[2] == player)
+            {
+                nextMove = 8;
+            }
+            else if (gameBoard[5] == gameBoard[8] && gameBoard[2] == "2" && gameBoard[5] == player)
+            {
+                nextMove = 2;
+            }
+            else if (gameBoard[2] == gameBoard[8] && gameBoard[5] == "5" && gameBoard[1] == player)
+            {
+                nextMove = 5;
+            }
+            else if (gameBoard[0] == gameBoard[4] && gameBoard[8] == "8" && gameBoard[0] == player)
+            {
+                nextMove = 8;
+            }
+            else if (gameBoard[4] == gameBoard[8] && gameBoard[0] == "0" && gameBoard[4] == player)
+            {
+                nextMove = 0;
+            }
+            else if (gameBoard[0] == gameBoard[8] && gameBoard[4] == "4" && gameBoard[0] == player)
+            {
+                nextMove = 4;
+            }
+            else if (gameBoard[2] == gameBoard[4] && gameBoard[6] == "6" && gameBoard[2] == player)
+            {
+                nextMove = 6;
+            }
+            else if (gameBoard[2] == gameBoard[6] && gameBoard[4] == "4" && gameBoard[2] == player)
+            {
+                nextMove = 4;
+            }
+            else if (gameBoard[4] == gameBoard[6] && gameBoard[2] == "2" && gameBoard[6] == player)
+            {
+                nextMove = 2;
+            }
+
+            return nextMove;
         }
 
         public static bool CheckMoveWinsGame(string[] gameBoard)
