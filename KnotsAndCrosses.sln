@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnotsAndCrosses", "KnotsAndCrosses\KnotsAndCrosses.csproj", "{5F8CCD0A-BBF0-4B79-B68A-B2EB0C9A59BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnotsAndCrossesWebApp", "KnotsAndCrossesWebApp\KnotsAndCrossesWebApp.csproj", "{050B5AF9-8E16-4329-9827-D987938A83B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnotsAndCrossesEngine", "KnotsAndCrossesEngine\KnotsAndCrossesEngine.csproj", "{CC75BF97-3543-44A4-AE6A-882899EE421B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{5F8CCD0A-BBF0-4B79-B68A-B2EB0C9A59BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F8CCD0A-BBF0-4B79-B68A-B2EB0C9A59BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F8CCD0A-BBF0-4B79-B68A-B2EB0C9A59BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{050B5AF9-8E16-4329-9827-D987938A83B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{050B5AF9-8E16-4329-9827-D987938A83B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{050B5AF9-8E16-4329-9827-D987938A83B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{050B5AF9-8E16-4329-9827-D987938A83B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC75BF97-3543-44A4-AE6A-882899EE421B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC75BF97-3543-44A4-AE6A-882899EE421B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC75BF97-3543-44A4-AE6A-882899EE421B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC75BF97-3543-44A4-AE6A-882899EE421B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
