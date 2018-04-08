@@ -8,16 +8,27 @@
         border: 1px solid black;
     }
     .button {
-        width: 125px;
-        height: 125px;
+        width: 175px;
+        height: 175px;
         font-size: 700%;
+    }
+    .btnNewGame {
+        font-size: medium;
+        font-weight: bold;
+    }
+    label {
+        font-size: x-large;
+        font-weight: bold;
+    }
+    #divGameBoard {
+        display: block; 
     }
   </style> 
 </asp:content>
 
 <asp:Content ID="PageBodyContent" ContentPlaceHolderID="PageBody" runat="Server">
-        <div ID="divGameBoard" runat="server" style="display: block; width: 375px;">
-            <table width="100%">
+        <div ID="divGameBoard" runat="server">
+            <table>
                 <tr>
                     <td>
                          <asp:button ID="btnPos0" runat="server" OnClick="btnPos0_Click" CssClass="button" />
@@ -53,10 +64,10 @@
                 </tr>
             </table>
             <br />
-            <asp:Button ID="btnNewGame" runat="Server" Text="New Game" OnClick="btnNewGame_Click" />
+            <asp:Button ID="btnNewGame" runat="Server" Text="New Game" OnClick="btnNewGame_Click" CssClass="btnNewGame" Height="58px" Width="141px" />
         </div><br />
 
-    <label id="lblGameStatusMsg" runat="server"></label>
-    <label id="lblErrorMsg" runat="server"></label>
+    <label id="lblGameStatusMsg" runat="server" CssClass="displayMessage"></label>
+    <label id="lblErrorMsg" runat="server" CssClass="displayMessage"></label>
 </asp:Content>
 

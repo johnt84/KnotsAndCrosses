@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace KnotsAndCrossesEngine
@@ -23,6 +24,8 @@ namespace KnotsAndCrossesEngine
         public int NextPlayerSwitch { get; set; } 
         public bool GameComplete { get; set; }
         public int WinningPlayer { get; set; }
+        public int RowCount { get; set; }
+        public int ColCount { get; set; }
         public static bool TwoPlayerMode { get; set; } = false;
         public string[] GameBoard { get; set; }
         public static string[] Player { get; set; } = { "X", "O" };
@@ -34,6 +37,8 @@ namespace KnotsAndCrossesEngine
             NextPlayerSwitch = 0;
             GameComplete = false;
             WinningPlayer = 0;
+            RowCount = 3;
+            ColCount = 3;
             GameBoard = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8" };
         }
 
@@ -74,56 +79,47 @@ namespace KnotsAndCrossesEngine
 
         private MoveWinsGameCheck CheckMoveWinsGame()
         {
-            WinningMove winningMovePos = WinningMove.Row1;
+            var row1 = GameBoard.Where((x, i) => i / RowCount == 0);
+            var row2 = GameBoard.Where((x, i) => i / RowCount == 1);
+            var row3 = GameBoard.Where((x, i) => i / RowCount == 2);
 
-            bool horizontalCheck = false;
+            var row1Matches = row1.All(x => x == row1.First());
+            var row2Matches = row2.All(x => x == row2.First());
+            var row3Matches = row3.All(x => x == row3.First());
 
-            if (GameBoard[0] == GameBoard[1] && GameBoard[1] == GameBoard[2])
-            {
-                winningMovePos = WinningMove.Row1;
-                horizontalCheck = true;
-            }
-            else if (GameBoard[3] == GameBoard[4] && GameBoard[4] == GameBoard[5])
-            {
-                winningMovePos = WinningMove.Row2;
-                horizontalCheck = true;
-            }
-            else if (GameBoard[6] == GameBoard[7] && GameBoard[7] == GameBoard[8])
-            {
-                winningMovePos = WinningMove.Row3;
-                horizontalCheck = true;
-            }
+            bool horizontalCheck = row1Matches || row2Matches || row3Matches;
 
-            bool verticalCheck = false;
+            var col1 = GameBoard.Where((x, i) => i % ColCount == 0);
+            var col2 = GameBoard.Where((x, i) => i % ColCount == 1);
+            var col3 = GameBoard.Where((x, i) => i % ColCount == 2);
 
-            if (GameBoard[0] == GameBoard[3] && GameBoard[3] == GameBoard[6])
-            {
-                winningMovePos = WinningMove.Col1;
-                verticalCheck = true;
-            }
-            else if (GameBoard[1] == GameBoard[4] && GameBoard[4] == GameBoard[7])
-            {
-                winningMovePos = WinningMove.Col2;
-                verticalCheck = true;
-            }
-            else if (GameBoard[2] == GameBoard[5] && GameBoard[5] == GameBoard[8])
-            {
-                winningMovePos = WinningMove.Col3;
-                verticalCheck = true;
-            }
+            var col1Matches = col1.All(x => x == col1.First());
+            var col2Matches = col2.All(x => x == col2.First());
+            var col3Matches = col3.All(x => x == col3.First());
 
-            bool diagonalCheck = false;
+            bool verticalCheck = col1Matches || col2Matches || col3Matches;
 
-            if (GameBoard[0] == GameBoard[4] && GameBoard[4] == GameBoard[8])
+            var diag1 = GameBoard.Where((x, i) => i % ColCount + 1 == 0);
+            var diag2 = GameBoard.Where((x, i) => i % ColCount - 2 == 0).Skip(1).Take(3);
+
+            var diag1Matches = diag1.All(x => x == diag1.First());
+            var diag2Matches = diag2.All(x => x == diag2.First());
+
+            bool diagonalCheck = diag1Matches || diag2Matches;
+
+            var gridPosition = new Dictionary<WinningMove, bool>
             {
-                winningMovePos = WinningMove.Diag1;
-                diagonalCheck = true;
-            }
-            else if (GameBoard[2] == GameBoard[4] && GameBoard[4] == GameBoard[6])
-            {
-                winningMovePos = WinningMove.Diag2;
-                diagonalCheck = true;
-            }
+                { WinningMove.Row1, row1Matches},
+                { WinningMove.Row2, row2Matches},
+                { WinningMove.Row3, row3Matches},
+                { WinningMove.Col1, col1Matches},
+                { WinningMove.Col2, col2Matches},
+                { WinningMove.Col3, col3Matches},
+                { WinningMove.Diag1, diag1Matches},
+                { WinningMove.Diag2, diag2Matches},
+            };
+
+            var winningMovePos = gridPosition.Where(x => x.Value == true).FirstOrDefault();
 
             string winningGameMessage = string.Empty;
             bool moveWinsGame = false;
@@ -138,7 +134,7 @@ namespace KnotsAndCrossesEngine
             var moveWinsGameCheck = new MoveWinsGameCheck()
             {
                 MoveWinsGame = moveWinsGame,
-                WinningMovePos = winningMovePos,
+                WinningMovePos = winningMovePos.Key,
                 WinningGameMessage = winningGameMessage,
             };
 
