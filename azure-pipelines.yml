@@ -1,4 +1,9 @@
 # ASP.NET
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'Visual Studio Professional (12fdfaf2-34cc-4d39-828f-ee42dd36b2ca)'
+    appType: 'webApp'
+    appName: 'KnotsAndCrossesWebApp20180326104725'
 # Build and test ASP.NET projects.
 # Add steps that publish symbols, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
