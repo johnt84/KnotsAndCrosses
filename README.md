@@ -1,4 +1,4 @@
-# Knots and Crosses
+# Knots and Crosses (tic-tac-toe) Web App
 Simple knots and crosses (tic-tac-toe) web app where you can play against an "intelligent" computer player
 
 * User plays knots and crosses (tic-tac-toe) against a semi-intelligent computer player
