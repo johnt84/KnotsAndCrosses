@@ -5,6 +5,7 @@ Simple knots and crosses (tic-tac-toe) web app where you can play against an "in
 * Can repeatedly play new games
 * Front end is developed using ASP.Net Web Forms 4.6.1
 * Game engine is developed using .Net Standard 2
+* Live web app is deployed to an Azure web app
 
 ## New Game
 
