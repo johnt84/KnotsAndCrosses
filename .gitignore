@@ -28,3 +28,5 @@
 /packages/Microsoft.Net.Compilers.2.4.0/tools
 /packages/Microsoft.Net.Compilers.2.4.0/Microsoft.Net.Compilers.2.4.0.nupkg
 /packages/Microsoft.Net.Compilers.2.4.0/ThirdPartyNotices.rtf
+/.vs/KnotsAndCrosses
+/KnotsAndCrossesEngine/bin/Debug/netstandard2.1
