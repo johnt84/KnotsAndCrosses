@@ -30,3 +30,6 @@
 /packages/Microsoft.Net.Compilers.2.4.0/ThirdPartyNotices.rtf
 /.vs/KnotsAndCrosses
 /KnotsAndCrossesEngine/bin/Debug/netstandard2.1
+/KnotsAndCrosses/obj/Release
+/KnotsAndCrossesEngine/bin/Release/netstandard2.0
+/KnotsAndCrossesWebApp/obj/Release
