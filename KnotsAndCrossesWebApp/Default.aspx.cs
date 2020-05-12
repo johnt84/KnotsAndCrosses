@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using KnotsAndCrossesEngine;
+using System;
 using System.Drawing;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using KnotsAndCrossesEngine;
 
 namespace KnotsAndCrossesWebApp
 {
@@ -20,11 +17,16 @@ namespace KnotsAndCrossesWebApp
             get
             {
                 if (this.ViewState[KNOTS_AND_CROSSES_ENGINE_NAME] == null)
+                {
                     return null;
+                }
 
                 return (KnotsAndCrossesEngine.KnotsAndCrossesEngine)this.ViewState[KNOTS_AND_CROSSES_ENGINE_NAME];
             }
-            set { this.ViewState[KNOTS_AND_CROSSES_ENGINE_NAME] = value; }
+            set 
+            { 
+                this.ViewState[KNOTS_AND_CROSSES_ENGINE_NAME] = value; 
+            }
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -121,27 +123,22 @@ namespace KnotsAndCrossesWebApp
                     bool player2IsUser = GameEngine.NextPlayerSwitch == 1 && KnotsAndCrossesEngine.KnotsAndCrossesEngine.TwoPlayerMode;
                     bool player2IsComputer = GameEngine.NextPlayerSwitch == 1 && !KnotsAndCrossesEngine.KnotsAndCrossesEngine.TwoPlayerMode;
 
-                    if (GameEngine.NextPlayerSwitch == 0 || player2IsUser)
+                    lblGameStatusMsg.InnerText = $"{ NextPlayerTurnMessage() }!  Player { GameEngine.NextPlayerSwitch + 1 } take your turn";
+
+                    DisplayComputerNextMove(GameEngine.ComputerUserNextMove());
+
+                    var computerWinsGameCheck = GameEngine.MoveWinsGame();
+
+                    if (computerWinsGameCheck.MoveWinsGame)
                     {
-                        lblGameStatusMsg.InnerText = $"{ NextPlayerTurnMessage() }!  Player { GameEngine.NextPlayerSwitch + 1 } take your turn";
+                        ToggleEnableAllButtons(false);
+                        lblGameStatusMsg.InnerText = computerWinsGameCheck.WinningGameMessage;
+                        DisplayWinningLine(computerWinsGameCheck.WinningMovePos);
                     }
-                    else
+                    else if (GameEngine.GameBoard.All(x => KnotsAndCrossesEngine.KnotsAndCrossesEngine.Player.Any(y => x == y)))
                     {
-                        DisplayComputerNextMove(GameEngine.ComputerUserNextMove());
-
-                        var computerWinsGameCheck = GameEngine.MoveWinsGame();
-
-                        if (computerWinsGameCheck.MoveWinsGame)
-                        {
-                            ToggleEnableAllButtons(false);
-                            lblGameStatusMsg.InnerText = computerWinsGameCheck.WinningGameMessage;
-                            DisplayWinningLine(computerWinsGameCheck.WinningMovePos);
-                        }
-                        else if (GameEngine.GameBoard.All(x => KnotsAndCrossesEngine.KnotsAndCrossesEngine.Player.Any(y => x == y)))
-                        {
-                            ToggleEnableAllButtons(false);
-                            lblGameStatusMsg.InnerText = "Cats game, game ends in a draw!";
-                        }
+                        ToggleEnableAllButtons(false);
+                        lblGameStatusMsg.InnerText = "Cats game, game ends in a draw!";
                     }
                 }
             }
@@ -306,6 +303,5 @@ namespace KnotsAndCrossesWebApp
                     break;
             }
         }
-
     }
 }
