@@ -4,7 +4,6 @@
 
 bin/
 obj/
-Properties/
 .vs/
 packages/
 /KnotsAndCrossesWebApp/KnotsAndCrossesWebApp.csproj.user
