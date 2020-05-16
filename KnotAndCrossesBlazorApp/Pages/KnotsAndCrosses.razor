@@ -1,0 +1,255 @@
+﻿@page "/KnotsAndCrosses"
+@using Microsoft.Extensions.Configuration
+@using KnotsAndCrossesEngine
+@inject IConfiguration Configuration
+@inject KnotsAndCrossesEngine GameEngine
+
+<style type="text/css">
+    td {
+        width: 125px;
+        height: 125px;
+        border: 1px solid black;
+        font-size: x-large;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .button {
+        width: 175px;
+        height: 175px;
+        font-size: 700%;
+    }
+
+    .btnNewGame {
+        font-size: medium;
+        font-weight: bold;
+    }
+
+    label {
+        font-size: x-large;
+        font-weight: bold;
+    }
+
+    #divGameBoard {
+        display: block;
+    }
+</style>
+
+<div ID="divGameBoard">
+    <table>
+        @for (int rowIndex = 0; rowIndex < 3; rowIndex++)
+        {
+            <tr>
+                @for (int colIndex = 0; colIndex < 3; colIndex++)
+                {
+                    int x = rowIndex;
+                    int y = colIndex;
+                    <td @onclick="@(() => PieceClicked(x,y))" class="button" style="@GetColour(rowIndex, colIndex)">@GetKnotOrCross(rowIndex, colIndex)</td>
+                }
+            </tr>
+        }
+    </table>
+    <br />
+    <button id="btnNewGame" class="btnNewGame" Height="58px" Width="141px" @onclick="NewGame">New Game</button>
+</div>
+<br />
+
+<label id="lblGameStatusMsg">@gameStatusMessage</label>
+<label id="lblErrorMsg">@errorMessage</label>
+
+@code {
+    string playerTurnMessage;
+    string gameStatusMessage;
+    string errorMessage;
+    bool gameComplete;
+    List<string> winningMoves = new List<string>();
+
+    Dictionary<string, int> gameBoardPositions = new Dictionary<string, int>()
+{
+        { "0,0", 0 },
+        { "0,1", 1 },
+        { "0,2", 2 },
+        { "1,0", 3 },
+        { "1,1", 4 },
+        { "1,2", 5 },
+        { "2,0", 6 },
+        { "2,1", 7 },
+        { "2,2", 8 },
+    };
+
+    private void PieceClicked(int rowIndex, int colIndex)
+    {
+        if (gameComplete)
+        {
+            return;
+        }
+
+        string playerTurn = GameEngine.PlayerMove(gameBoardPositions[$"{rowIndex},{colIndex}"]);
+
+        if (KnotsAndCrossesEngine.Player.Any(x => x == playerTurn))
+        {
+            var moveWinsGameCheck = GameEngine.MoveWinsGame();
+
+            if (moveWinsGameCheck.MoveWinsGame)
+            {
+                gameStatusMessage = moveWinsGameCheck.WinningGameMessage;
+                SetWinningLine(moveWinsGameCheck.WinningMovePos);
+                gameComplete = true;
+            }
+            else if (GameEngine.GameBoard.All(x => KnotsAndCrossesEngine.Player.Any(y => x == y)))
+            {
+                gameStatusMessage = "Cats game, game ends in a draw!";
+                gameComplete = true;
+            }
+            else
+            {
+                bool player2IsUser = GameEngine.NextPlayerSwitch == 1 && KnotsAndCrossesEngine.TwoPlayerMode;
+                bool player2IsComputer = GameEngine.NextPlayerSwitch == 1 && !KnotsAndCrossesEngine.TwoPlayerMode;
+
+                gameStatusMessage = $"{ NextPlayerTurnMessage() }!  Player { GameEngine.NextPlayerSwitch + 1 } take your turn";
+
+                var computerUserNextMove = GameEngine.ComputerUserNextMove(); ;
+
+                var test = gameBoardPositions.FirstOrDefault(x => x.Value == computerUserNextMove.ComputerUserMovePos).Key;
+
+                var array = test.Split(",");
+
+                int computerRowIndex = Convert.ToInt32(array[0]);
+                int computerColIndex = Convert.ToInt32(array[1]);
+
+
+                GameEngine.GameBoard[gameBoardPositions[$"{computerRowIndex},{computerColIndex}"]] = computerUserNextMove.ComputerUserMove;
+
+                var computerWinsGameCheck = GameEngine.MoveWinsGame();
+
+                if (computerWinsGameCheck.MoveWinsGame)
+                {
+                    gameStatusMessage = computerWinsGameCheck.WinningGameMessage;
+                    SetWinningLine(computerWinsGameCheck.WinningMovePos);
+                    gameComplete = true;
+                }
+                else if (GameEngine.GameBoard.All(x => KnotsAndCrossesEngine.Player.Any(y => x == y)))
+                {
+                    gameStatusMessage = "Cats game, game ends in a draw!";
+                    gameComplete = true;
+                }
+            }
+        }
+        else
+        {
+            errorMessage = playerTurn;
+        }
+    }
+
+    private void NewGame()
+    {
+        GameEngine = new KnotsAndCrossesEngine();
+        gameComplete = false;
+        winningMoves.Clear();
+        gameStatusMessage = $"NEW GAME.  Player { GameEngine.PlayerSwitch + 1 } take your turn";
+    }
+
+    private string GetKnotOrCross(int rowIndex, int colIndex)
+    {
+        string knotOrCross = GameEngine.GameBoard[gameBoardPositions[$"{rowIndex},{colIndex}"]];
+        return int.TryParse(knotOrCross, out int test) ? string.Empty : knotOrCross;
+    }
+
+    private string NextPlayerTurnMessage()
+    {
+        var rnd = new Random();
+        var playerTurnMessages = Configuration["PlayerTurnMessages"].Split(",");
+
+        string currentPlayerTurnMessage = playerTurnMessages[rnd.Next(0, playerTurnMessages.Length)];
+
+        while (currentPlayerTurnMessage == playerTurnMessage)
+        {
+            currentPlayerTurnMessage = playerTurnMessages[rnd.Next(0, playerTurnMessages.Length)];
+        }
+
+        playerTurnMessage = currentPlayerTurnMessage;
+
+        return currentPlayerTurnMessage;
+    }
+
+    private string GetColour(int rowIndex, int colIndex)
+    {
+        string colourStyle = GetKnotOrCross(rowIndex, colIndex) == "X" ? "color: red" : "color: blue";
+
+        colourStyle += winningMoves.Contains($"{rowIndex},{colIndex}") ? ";background-color:yellow" : string.Empty;
+
+
+        return colourStyle;
+    }
+
+    private void SetWinningLine(WinningMove winningMove)
+    {
+        switch (winningMove)
+        {
+            case WinningMove.Row1:
+                winningMoves = new List<string>()
+    {
+                    "0,0",
+                    "0,1",
+                    "0,2"
+                };
+                break;
+            case WinningMove.Row2:
+                winningMoves = new List<string>()
+    {
+                    "1,0",
+                    "1,1",
+                    "1,2"
+                };
+                break;
+            case WinningMove.Row3:
+                winningMoves = new List<string>()
+    {
+                    "2,0",
+                    "2,1",
+                    "2,2"
+                };
+                break;
+            case WinningMove.Col1:
+                winningMoves = new List<string>()
+    {
+                    "0,0",
+                    "1,0",
+                    "2,0"
+                };
+                break;
+            case WinningMove.Col2:
+                winningMoves = new List<string>()
+    {
+                    "0,1",
+                    "1,1",
+                    "2,1"
+                };
+                break;
+            case WinningMove.Col3:
+                winningMoves = new List<string>()
+     {
+                    "0,2",
+                    "1,2",
+                    "2,2"
+                };
+                break;
+            case WinningMove.Diag1:
+                winningMoves = new List<string>()
+    {
+                    "0,0",
+                    "1,1",
+                    "2,2"
+                };
+                break;
+            case WinningMove.Diag2:
+                winningMoves = new List<string>()
+    {
+                    "0,2",
+                    "1,1",
+                    "2,0"
+                };
+                break;
+        }
+    }
+}
