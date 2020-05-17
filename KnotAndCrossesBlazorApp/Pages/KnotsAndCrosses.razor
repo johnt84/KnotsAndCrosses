@@ -61,6 +61,7 @@
     string gameStatusMessage;
     string errorMessage;
     bool gameComplete;
+    bool currentPlayerIsUser;
     List<string> winningMoves = new List<string>();
 
     Dictionary<string, int> gameBoardPositions = new Dictionary<string, int>()
@@ -83,23 +84,18 @@
 
     private async Task PieceClicked(int rowIndex, int colIndex)
     {
-        if (gameComplete)
+        if (gameComplete || !currentPlayerIsUser)
         {
             return;
         }
 
         string playerTurn = GameEngine.PlayerMove(gameBoardPositions[$"{rowIndex},{colIndex}"]);
 
-        if (playerTurn != "X")
-        {
-            return;
-        }
-
         var moveWinsGameCheck = GameEngine.MoveWinsGame();
 
         if (moveWinsGameCheck.MoveWinsGame)
         {
-            GameIsWon(moveWinsGameCheck);
+            GameIsWon(moveWinsGameCheck, true);
         }
         else if (GameEngine.GameBoard.All(x => KnotsAndCrossesEngine.Player.Any(y => x == y)))
         {
@@ -107,7 +103,8 @@
         }
         else
         {
-            gameStatusMessage = $"{ NextPlayerTurnMessage() }!  Computer player take your turn";
+            gameStatusMessage = $"{ NextPlayerTurnMessage() }!  Computer takes it's turn...";
+            currentPlayerIsUser = false;
             await ComputerMove();
         }
     }
@@ -116,17 +113,20 @@
     {
         GameEngine = new KnotsAndCrossesEngine();
         gameComplete = false;
+        currentPlayerIsUser = true;
         winningMoves.Clear();
         gameStatusMessage = "NEW GAME.  Please take your turn";
     }
 
     private async Task ComputerMove()
     {
-        await Task.Delay(1500);
+        //Delay computer move so to simulate the computer player making a decision and also makes the game flow better
+        await Task.Delay(Convert.ToInt32(Configuration["ComputerMoveTimeInMilliseconds"]));
+
         bool player2IsUser = GameEngine.NextPlayerSwitch == 1 && KnotsAndCrossesEngine.TwoPlayerMode;
         bool player2IsComputer = GameEngine.NextPlayerSwitch == 1 && !KnotsAndCrossesEngine.TwoPlayerMode;
 
-        var computerUserNextMove = GameEngine.ComputerUserNextMove(); ;
+        var computerUserNextMove = GameEngine.ComputerUserNextMove();
 
         var computerMove = gameBoardPositions.FirstOrDefault(x => x.Value == computerUserNextMove.ComputerUserMovePos).Key;
 
@@ -141,7 +141,7 @@
 
         if (computerWinsGameCheck.MoveWinsGame)
         {
-            GameIsWon(computerWinsGameCheck);
+            GameIsWon(computerWinsGameCheck, false);
         }
         else if (GameEngine.GameBoard.All(x => KnotsAndCrossesEngine.Player.Any(y => x == y)))
         {
@@ -149,7 +149,8 @@
         }
         else
         {
-            gameStatusMessage = $"{ NextPlayerTurnMessage() }!  Please take your turn";
+            currentPlayerIsUser = true;
+            gameStatusMessage = "Please take your turn";
         }
     }
 
@@ -256,9 +257,9 @@
         }
     }
 
-    private void GameIsWon(MoveWinsGameCheck moveWinsGameCheck)
+    private void GameIsWon(MoveWinsGameCheck moveWinsGameCheck, bool isUserPlayerTheWinner)
     {
-        gameStatusMessage = moveWinsGameCheck.WinningGameMessage;
+        gameStatusMessage = isUserPlayerTheWinner ? "Congratulations you win" : "Unlucky the computer wins";
         SetWinningLine(moveWinsGameCheck.WinningMovePos);
         gameComplete = true;
     }
