@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 
-namespace KnotAndCrossesBlazorApp
+namespace KnotsAndCrossesBlazorApp
 {
     public class Startup
     {

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace KnotsAndCrossesEngine
 {
@@ -26,8 +29,26 @@ namespace KnotsAndCrossesEngine
         public static bool TwoPlayerMode { get; set; } = false;
         public string[] GameBoard { get; set; }
         public static string[] Player { get; set; } = { "X", "O" };
+        public string GameStatusMessage { get; set; }
+        public bool CurrentPlayerIsUser { get; set; }
+        public List<string> WinningMoves = new List<string>();
+        public string PlayerTurnMessage { get; set; }
+        public Dictionary<string, int> GameBoardPositions = new Dictionary<string, int>()
+        {
+            { "0,0", 0 },
+            { "0,1", 1 },
+            { "0,2", 2 },
+            { "1,0", 3 },
+            { "1,1", 4 },
+            { "1,2", 5 },
+            { "2,0", 6 },
+            { "2,1", 7 },
+            { "2,2", 8 },
+        };
+        private string PlayerTurnMessages = "Good move, Ooh controversial, Wow didn't see that one coming, Nice one, Wow this is tense, Where did you pull that one out of, Your on-fire";
+        private int ComputerMoveTimeInMilliseconds = 500;
 
-    public KnotsAndCrossesEngine()
+        public KnotsAndCrossesEngine()
         {
             TurnCount = 1;
             PlayerSwitch = 0;
@@ -35,6 +56,15 @@ namespace KnotsAndCrossesEngine
             GameComplete = false;
             WinningPlayer = 0;
             GameBoard = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8" };
+            GameStatusMessage = "NEW GAME.  Please take your turn";
+            CurrentPlayerIsUser = true;
+            WinningMoves.Clear();
+        }
+
+
+        public string PlayerMove(int rowIndex, int colIndex)
+        {
+            return PlayerMove(GameBoardPositions[$"{rowIndex},{colIndex}"]);
         }
 
         public string PlayerMove(int gameInput)
@@ -63,13 +93,13 @@ namespace KnotsAndCrossesEngine
             return knotOrCross;
         }
 
+
         public MoveWinsGameCheck MoveWinsGame()
         {
-            var checkMoveWinsGame = CheckMoveWinsGame();
+            var moveWinsGameCheck = CheckMoveWinsGame();
+            moveWinsGameCheck = GameIsADraw(moveWinsGameCheck);
 
-            GameComplete = checkMoveWinsGame.MoveWinsGame;
-
-            return checkMoveWinsGame;
+            return moveWinsGameCheck;
         }
 
         private MoveWinsGameCheck CheckMoveWinsGame()
@@ -82,16 +112,34 @@ namespace KnotsAndCrossesEngine
             {
                 winningMovePos = WinningMove.Row1;
                 horizontalCheck = true;
+                WinningMoves = new List<string>()
+                {
+                    "0,0",
+                    "0,1",
+                    "0,2"
+                };
             }
             else if (GameBoard[3] == GameBoard[4] && GameBoard[4] == GameBoard[5])
             {
                 winningMovePos = WinningMove.Row2;
                 horizontalCheck = true;
+                WinningMoves = new List<string>()
+                {
+                    "1,0",
+                    "1,1",
+                    "1,2"
+                };
             }
             else if (GameBoard[6] == GameBoard[7] && GameBoard[7] == GameBoard[8])
             {
                 winningMovePos = WinningMove.Row3;
                 horizontalCheck = true;
+                WinningMoves = new List<string>()
+                {
+                    "2,0",
+                    "2,1",
+                    "2,2"
+                };
             }
 
             bool verticalCheck = false;
@@ -100,16 +148,34 @@ namespace KnotsAndCrossesEngine
             {
                 winningMovePos = WinningMove.Col1;
                 verticalCheck = true;
+                WinningMoves = new List<string>()
+                {
+                    "0,0",
+                    "1,0",
+                    "2,0"
+                };
             }
             else if (GameBoard[1] == GameBoard[4] && GameBoard[4] == GameBoard[7])
             {
                 winningMovePos = WinningMove.Col2;
                 verticalCheck = true;
+                WinningMoves = new List<string>()
+                {
+                    "0,1",
+                    "1,1",
+                    "2,1"
+                };
             }
             else if (GameBoard[2] == GameBoard[5] && GameBoard[5] == GameBoard[8])
             {
                 winningMovePos = WinningMove.Col3;
                 verticalCheck = true;
+                WinningMoves = new List<string>()
+                {
+                    "0,2",
+                    "1,2",
+                    "2,2"
+                };
             }
 
             bool diagonalCheck = false;
@@ -118,11 +184,23 @@ namespace KnotsAndCrossesEngine
             {
                 winningMovePos = WinningMove.Diag1;
                 diagonalCheck = true;
+                WinningMoves = new List<string>()
+                {
+                    "0,0",
+                    "1,1",
+                    "2,2"
+                };
             }
             else if (GameBoard[2] == GameBoard[4] && GameBoard[4] == GameBoard[6])
             {
                 winningMovePos = WinningMove.Diag2;
                 diagonalCheck = true;
+                WinningMoves = new List<string>()
+                {
+                    "0,2",
+                    "1,1",
+                    "2,0"
+                };
             }
 
             string winningGameMessage = string.Empty;
@@ -133,6 +211,7 @@ namespace KnotsAndCrossesEngine
                 moveWinsGame = true;
                 WinningPlayer = PlayerSwitch + 1;
                 winningGameMessage = $"Congratulations!!  Player { WinningPlayer } wins!";
+                GameStatusMessage = CurrentPlayerIsUser ? "Congratulations you win" : "Unlucky the computer wins";
             }
 
             var moveWinsGameCheck = new MoveWinsGameCheck()
@@ -140,7 +219,24 @@ namespace KnotsAndCrossesEngine
                 MoveWinsGame = moveWinsGame,
                 WinningMovePos = winningMovePos,
                 WinningGameMessage = winningGameMessage,
+                GameComplete = moveWinsGame,
             };
+
+            return moveWinsGameCheck;
+        }
+
+        private MoveWinsGameCheck GameIsADraw(MoveWinsGameCheck moveWinsGameCheck)
+        {
+            if (GameBoard.All(x => KnotsAndCrossesEngine.Player.Any(y => x == y)))
+            {
+                moveWinsGameCheck.GameIsADraw = true;
+                moveWinsGameCheck.GameComplete = true;
+                GameStatusMessage = "Cats game, game ends in a draw!";
+            }
+            else
+            {
+                moveWinsGameCheck.GameIsADraw = false;
+            }
 
             return moveWinsGameCheck;
         }
@@ -270,8 +366,8 @@ namespace KnotsAndCrossesEngine
             else
             {
                 var availablePositions = GameBoard.ToList()
-                      .Where(x => x != "O" && x != "X")
-                      .ToList();
+                        .Where(x => x != "O" && x != "X")
+                        .ToList();
 
                 var availablePositionArr = availablePositions.ToArray();
 
@@ -293,7 +389,62 @@ namespace KnotsAndCrossesEngine
 
         public void SetNextPlayer(int currentPlayer)
         {
-            NextPlayerSwitch = (currentPlayer == 0) ? 1 : 0;
+            NextPlayerSwitch = currentPlayer == 0 ? 1 : 0;
+        }
+
+        public string GetKnotOrCross(int rowIndex, int colIndex)
+        {
+            string knotOrCross = GameBoard[GameBoardPositions[$"{rowIndex},{colIndex}"]];
+            return int.TryParse(knotOrCross, out int knotOrCrossPosition) ? string.Empty : knotOrCross;
+        }
+
+        public async Task MakePlayerMove(int rowIndex, int colIndex)
+        {
+            PlayerMove(rowIndex, colIndex);
+
+            var moveWinsGameCheck = MoveWinsGame();
+
+            if (!moveWinsGameCheck.GameComplete)
+            {
+                CurrentPlayerIsUser = false;
+                GameStatusMessage = $"{ NextPlayerTurnMessage() }!  Computer takes it's turn...";
+                await ComputerMove();
+            }
+        }
+
+        private string NextPlayerTurnMessage()
+        {
+            var rnd = new Random();
+
+            var playerTurnMessages = PlayerTurnMessages.Split(',');
+
+            string currentPlayerTurnMessage = playerTurnMessages[rnd.Next(0, playerTurnMessages.Length)];
+
+            while (currentPlayerTurnMessage == PlayerTurnMessage)
+            {
+                currentPlayerTurnMessage = playerTurnMessages[rnd.Next(0, playerTurnMessages.Length)];
+            }
+
+            PlayerTurnMessage = currentPlayerTurnMessage;
+
+            return currentPlayerTurnMessage;
+        }
+
+        private async Task ComputerMove()
+        {
+            await Task.Delay(ComputerMoveTimeInMilliseconds);
+
+            var computerUserNextMove = ComputerUserNextMove();
+
+            GameBoard[computerUserNextMove.ComputerUserMovePos] = computerUserNextMove.ComputerUserMove;
+
+            var computerWinsGameCheck = MoveWinsGame();
+
+            if (!computerWinsGameCheck.GameComplete)
+            {
+                CurrentPlayerIsUser = true;
+                GameStatusMessage = "Please take your turn";
+            }
         }
     }
 
@@ -308,5 +459,7 @@ namespace KnotsAndCrossesEngine
         public bool MoveWinsGame { get; set; }
         public WinningMove WinningMovePos { get; set; }
         public string WinningGameMessage { get; set; }
+        public bool GameComplete { get; set; }
+        public bool GameIsADraw { get; set; }
     }
 }
