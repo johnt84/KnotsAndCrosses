@@ -5,9 +5,9 @@ Simple knots and crosses (tic-tac-toe) web app where you can play against a "sem
 * Computer player will try to win the game and stop the user from winning the game
 * Can repeatedly play new games
 * Random in-play message displayed after each user turn
-* Two versions of front end developed, one using ASP.Net Web Forms 4.8 and the other developed using Blazor Server/.Net Core 3.1
+* Three versions of front end developed, Blazor WebAssembly with PWA/.Net Core 3.1, Blazor Server/.Net Core 3.1 and ASP.Net Web Forms 4.8
 * Game engine is developed using .Net Standard 2
-* Live web app (web forms front end version) is deployed to an Azure web app
+* Live web app (Blazor WebAssembly with PWA version) is deployed to an Azure web app
 
 ## New Game
 
