@@ -3,8 +3,8 @@
 <asp:content contentplaceholderid="head" runat="server">
   <style type="text/css">
     td {
-        width: 125px;
-        height: 125px;
+        width: 175px;
+        height: 175px;
         border: 1px solid black;
     }
     .button {
