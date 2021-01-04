@@ -46,6 +46,11 @@ app {
     text-overflow: ellipsis;
 }
 
+.page {
+    flex-direction: row;
+    display: flex;
+}
+
 .sidebar {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
 }
