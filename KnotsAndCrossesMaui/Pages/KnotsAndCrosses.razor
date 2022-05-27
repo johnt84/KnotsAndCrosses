@@ -1,0 +1,87 @@
+﻿@page "/KnotsAndCrosses"
+
+@inject IConfiguration Configuration
+@inject KnotsAndCrossesEngine GameEngine
+
+<style type="text/css">
+    td {
+        width: 175px;
+        height: 175px;
+        border: 1px solid black;
+        font-size: x-large;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .button {
+        width: 175px;
+        height: 175px;
+        font-size: 700%;
+    }
+
+    .btnNewGame {
+        font-size: medium;
+        font-weight: bold;
+    }
+
+    label {
+        font-size: x-large;
+        font-weight: bold;
+    }
+
+    #divGameBoard {
+        display: block;
+    }
+</style>
+
+<div ID="divGameBoard">
+    <table>
+        @for (int rowIndex = 0; rowIndex < 3; rowIndex++)
+        {
+            <tr>
+                @for (int colIndex = 0; colIndex < 3; colIndex++)
+                {
+                    int x = rowIndex;
+                    int y = colIndex;
+                    <td @onclick="@(() => PieceClicked(x,y))" class="button" style="@GetPlayerColour(rowIndex, colIndex)">@GameEngine.GetKnotOrCross(rowIndex, colIndex)</td>
+                }
+            </tr>
+        }
+    </table>
+    <br />
+    <button id="btnNewGame" class="btnNewGame" Height="58px" Width="141px" @onclick="NewGame">New Game</button>
+</div>
+<br />
+
+<label id="lblGameStatusMsg">@GameEngine.GameStatusMessage</label>
+
+@code {
+    protected override void OnInitialized()
+    {
+        NewGame();
+    }
+
+    private async Task PieceClicked(int rowIndex, int colIndex)
+    {
+        if (GameEngine.GameComplete || !GameEngine.CurrentPlayerIsUser)
+        {
+            return;
+        }
+
+        await GameEngine.MakePlayerMove(rowIndex, colIndex);       
+    }
+
+    private void NewGame()
+    {
+        GameEngine = new KnotsAndCrossesEngine();
+    }
+
+    private string GetPlayerColour(int rowIndex, int colIndex)
+    {
+        string colourStyle = GameEngine.GetKnotOrCross(rowIndex, colIndex) == "X" ? "color: blue" : "color: red";
+
+        colourStyle += GameEngine.WinningMoves.Contains($"{rowIndex},{colIndex}") ? ";background-color:yellow" : string.Empty;
+
+        return colourStyle;
+    }
+}

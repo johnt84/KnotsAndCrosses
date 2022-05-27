@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30011.22
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32519.111
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnotsAndCrosses", "KnotsAndCrosses\KnotsAndCrosses.csproj", "{5F8CCD0A-BBF0-4B79-B68A-B2EB0C9A59BE}"
 EndProject
@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnotsAndCrossesEngine", "Kn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnotsAndCrossesBlazorApp", "KnotsAndCrossesBlazorApp\KnotsAndCrossesBlazorApp.csproj", "{CE3B89AC-DED8-43EC-B406-F784D96CBAD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnotsAndCrossesBlazorWasm", "KnotsAndCrossesBlazorWasm\KnotsAndCrossesBlazorWasm.csproj", "{B7472043-577E-4184-AB6A-7CC1B3D04700}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnotsAndCrossesBlazorWasm", "KnotsAndCrossesBlazorWasm\KnotsAndCrossesBlazorWasm.csproj", "{B7472043-577E-4184-AB6A-7CC1B3D04700}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnotsAndCrossesMaui", "KnotsAndCrossesMaui\KnotsAndCrossesMaui.csproj", "{B27E7AE7-85AB-4EB2-A422-7C9F5CAAFA86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,12 @@ Global
 		{B7472043-577E-4184-AB6A-7CC1B3D04700}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7472043-577E-4184-AB6A-7CC1B3D04700}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7472043-577E-4184-AB6A-7CC1B3D04700}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B27E7AE7-85AB-4EB2-A422-7C9F5CAAFA86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B27E7AE7-85AB-4EB2-A422-7C9F5CAAFA86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B27E7AE7-85AB-4EB2-A422-7C9F5CAAFA86}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B27E7AE7-85AB-4EB2-A422-7C9F5CAAFA86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B27E7AE7-85AB-4EB2-A422-7C9F5CAAFA86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B27E7AE7-85AB-4EB2-A422-7C9F5CAAFA86}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
