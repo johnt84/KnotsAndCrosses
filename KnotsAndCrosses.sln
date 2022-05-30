@@ -9,11 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnotsAndCrossesWebApp", "Kn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnotsAndCrossesEngine", "KnotsAndCrossesEngine\KnotsAndCrossesEngine.csproj", "{CC75BF97-3543-44A4-AE6A-882899EE421B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnotsAndCrossesBlazorApp", "KnotsAndCrossesBlazorApp\KnotsAndCrossesBlazorApp.csproj", "{CE3B89AC-DED8-43EC-B406-F784D96CBAD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnotsAndCrossesBlazorServer", "KnotsAndCrossesBlazorServer\KnotsAndCrossesBlazorServer.csproj", "{CE3B89AC-DED8-43EC-B406-F784D96CBAD9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnotsAndCrossesBlazorWasm", "KnotsAndCrossesBlazorWasm\KnotsAndCrossesBlazorWasm.csproj", "{B7472043-577E-4184-AB6A-7CC1B3D04700}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnotsAndCrossesMaui", "KnotsAndCrossesMaui\KnotsAndCrossesMaui.csproj", "{B27E7AE7-85AB-4EB2-A422-7C9F5CAAFA86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnotsAndCrossesMaui", "KnotsAndCrossesMaui\KnotsAndCrossesMaui.csproj", "{B27E7AE7-85AB-4EB2-A422-7C9F5CAAFA86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

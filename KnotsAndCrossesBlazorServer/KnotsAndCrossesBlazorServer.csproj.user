@@ -4,6 +4,6 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <ActiveDebugProfile>KnotsAndCrossesBlazorApp</ActiveDebugProfile>
+    <ActiveDebugProfile>KnotsAndCrossesBlazorServer</ActiveDebugProfile>
   </PropertyGroup>
 </Project>

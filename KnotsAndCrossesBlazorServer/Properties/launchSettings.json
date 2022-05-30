@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "KnotsAndCrossesBlazorApp": {
+    "KnotsAndCrossesBlazorServer": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,
