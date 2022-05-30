@@ -3,37 +3,6 @@
 @inject IConfiguration Configuration
 @inject KnotsAndCrossesEngine GameEngine
 
-<style type="text/css">
-    td {
-        width: 175px;
-        height: 175px;
-        border: 1px solid black;
-        font-size: x-large;
-        font-weight: bold;
-        text-align: center;
-    }
-
-    .button {
-        width: 175px;
-        height: 175px;
-        font-size: 700%;
-    }
-
-    .btnNewGame {
-        font-size: medium;
-        font-weight: bold;
-    }
-
-    label {
-        font-size: x-large;
-        font-weight: bold;
-    }
-
-    #divGameBoard {
-        display: block;
-    }
-</style>
-
 <div ID="divGameBoard">
     <table>
         @for (int rowIndex = 0; rowIndex < 3; rowIndex++)
@@ -43,7 +12,7 @@
                 {
                     int x = rowIndex;
                     int y = colIndex;
-                    <td @onclick="@(() => PieceClicked(x,y))" class="button" style="@GetPlayerColour(rowIndex, colIndex)">@GameEngine.GetKnotOrCross(rowIndex, colIndex)</td>
+                    <td id="GamePieceButton" @onclick="@(() => PieceClicked(x,y))" class="button" style="@GetPlayerColour(rowIndex, colIndex)">@GameEngine.GetKnotOrCross(rowIndex, colIndex)</td>
                 }
             </tr>
         }

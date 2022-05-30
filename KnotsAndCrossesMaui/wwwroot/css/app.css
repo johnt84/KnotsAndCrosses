@@ -82,3 +82,31 @@ a, .btn-link {
 		padding-left: env(safe-area-inset-left);
 	}
 }
+
+.btnNewGame {
+    font-size: medium;
+    font-weight: bold;
+}
+
+#divGameBoard {
+    display: block;
+}
+
+    #divGameBoard td {
+        width: 175px;
+        height: 175px;
+        border: 1px solid black;
+        font-weight: bold;
+        text-align: center;
+    }
+
+#lblGameStatusMsg {
+    font-size: x-large;
+    font-weight: bold;
+}
+
+#GamePieceButton {
+    width: 175px;
+    height: 175px;
+    font-size: 700%;
+}
