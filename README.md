@@ -1,5 +1,5 @@
 # Knots and Crosses (tic-tac-toe) Web App
-Simple knots and crosses (tic-tac-toe) web app where you can play against a "semi-intelligent" computer player
+Simple knots and crosses (tic-tac-toe) web app where you can play against a "semi-intelligent" computer player.  Web app developed 4 ways - WebForms, Blazor (WASM/Server) and  .NET MAUI Blazor.
 
 * User plays knots and crosses (tic-tac-toe) against a "semi-intelligent" computer player 
 * Computer player will try to win the game and stop the user from winning the game
