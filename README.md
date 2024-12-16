@@ -11,7 +11,7 @@ Simple knots and crosses (tic-tac-toe) web app where you can play against a "sem
   - ASP.Net Web Forms 4.8
   - Blazor MAUI/.Net 6
 * Game engine is developed using .Net Standard 2
-* Live web app (Blazor WebAssembly with PWA version) is deployed to an Azure web app
+* Live web app (Blazor WebAssembly with PWA version) is deployed to an Azure web app 
 
 ## New Game
 
